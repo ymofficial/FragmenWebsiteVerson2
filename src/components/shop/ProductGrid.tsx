@@ -47,46 +47,34 @@ const dummyProducts = [
 ];
 
 async function getProducts(searchParams?: { [key: string]: string | string[] | undefined }) {
-  if (!process.env.MONGODB_URI) {
+  try {
+    if (!process.env.MONGODB_URI) {
+      throw new Error("Missing MONGODB_URI");
+    }
+    
+    await dbConnect();
+    
+    const query: any = {};
+    if (searchParams?.inStock === "true") query.inStock = true;
+    if (searchParams?.category && typeof searchParams.category === "string") query.category = searchParams.category;
+    
+    let sortParams: any = { createdAt: -1 };
+    if (searchParams?.sort === "price_asc") sortParams = { price: 1 };
+    else if (searchParams?.sort === "price_desc") sortParams = { price: -1 };
+
+    const products = await Product.find(query).sort(sortParams).lean();
+    return products.map((product: any) => ({
+      ...product,
+      _id: product._id.toString(),
+    }));
+  } catch (error) {
+    console.error("Failed to fetch products:", error);
+    // Fallback to dummy data for build/demo stability
     let filtered = [...dummyProducts];
-    if (searchParams?.inStock === "true") {
-      filtered = filtered.filter(p => p.inStock);
-    }
-    if (searchParams?.category && typeof searchParams.category === "string") {
-      filtered = filtered.filter(p => p.category === searchParams.category);
-    }
-    if (searchParams?.sort === "price_asc") {
-      filtered.sort((a, b) => a.price - b.price);
-    } else if (searchParams?.sort === "price_desc") {
-      filtered.sort((a, b) => b.price - a.price);
-    }
+    if (searchParams?.inStock === "true") filtered = filtered.filter(p => p.inStock);
+    if (searchParams?.category && typeof searchParams.category === "string") filtered = filtered.filter(p => p.category === searchParams.category);
     return filtered;
   }
-  
-  await dbConnect();
-  
-  const query: any = {};
-  
-  if (searchParams?.inStock === "true") {
-    query.inStock = true;
-  }
-  
-  if (searchParams?.category && typeof searchParams.category === "string") {
-    query.category = searchParams.category;
-  }
-  
-  let sortParams: any = { createdAt: -1 };
-  if (searchParams?.sort === "price_asc") {
-    sortParams = { price: 1 };
-  } else if (searchParams?.sort === "price_desc") {
-    sortParams = { price: -1 };
-  }
-
-  const products = await Product.find(query).sort(sortParams).lean();
-  return products.map((product: any) => ({
-    ...product,
-    _id: product._id.toString(),
-  }));
 }
 
 export default async function ProductGrid({ searchParams }: ProductGridProps) {

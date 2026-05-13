@@ -2,6 +2,7 @@ import ProductGrid from "@/components/shop/ProductGrid";
 import ProductFilters from "@/components/shop/ProductFilters";
 import dbConnect from "@/lib/db";
 import PageContent from "@/models/PageContent";
+import Link from "next/link";
 
 const defaultSchema = {
   heroTitle: "Fragmen",
@@ -249,5 +250,3 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
     </main>
   );
 }
-
-import Link from "next/link";
