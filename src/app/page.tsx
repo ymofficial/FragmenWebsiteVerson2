@@ -3,22 +3,29 @@ import ProductFilters from "@/components/shop/ProductFilters";
 import dbConnect from "@/lib/db";
 import PageContent from "@/models/PageContent";
 
+const defaultSchema = {
+  heroTitle: "Fragmen",
+  heroSubtitle: "Discover the essence of elegance. A curated collection of masterful fragrances for the modern connoisseur.",
+  heroImage: "https://images.unsplash.com/photo-1615486171448-4fd1cf208462?auto=format&fit=crop&q=80",
+  section1Title: "Signature Scents",
+  section2Title: "Curated Collections",
+  footerDesc: "A SANCTUARY FOR PURE OILS. DEDICATED TO THE ANCIENT ART OF ATTAR MAKING AND THE PRESERVATION OF ORIENTAL OLFACTORY HERITAGE.",
+  reviews: [
+    { name: "Elena Vassilieva", address: "Dhaka, Bangladesh", review: "Fragmen has achieved the impossible: a perfect balance of heritage and modern edge. A masterpiece.", rating: 5 },
+    { name: "Marcus Thorne", address: "Chittagong, Bangladesh", review: "The scent discovery here is exceptional. Every fragrance feels bespoke, telling a story that lingers.", rating: 5 },
+    { name: "Sophia Khan", address: "Sylhet, Bangladesh", review: "The texture of these scents is rich, velvety, and undeniably premium. Quality is visible in every note.", rating: 4 }
+  ]
+};
+
 async function getHomeContent() {
-  await dbConnect();
-  const doc = await PageContent.findOne({ pageId: "home" }).lean();
-  return doc?.content || {
-    heroTitle: "Fragmen",
-    heroSubtitle: "Discover the essence of elegance. A curated collection of masterful fragrances for the modern connoisseur.",
-    heroImage: "https://images.unsplash.com/photo-1615486171448-4fd1cf208462?auto=format&fit=crop&q=80",
-    section1Title: "Signature Scents",
-    section2Title: "Curated Collections",
-    footerDesc: "A SANCTUARY FOR PURE OILS. DEDICATED TO THE ANCIENT ART OF ATTAR MAKING AND THE PRESERVATION OF ORIENTAL OLFACTORY HERITAGE.",
-    reviews: [
-      { name: "Elena Vassilieva", address: "Dhaka, Bangladesh", review: "Fragmen has achieved the impossible: a perfect balance of heritage and modern edge. A masterpiece.", rating: 5 },
-      { name: "Marcus Thorne", address: "Chittagong, Bangladesh", review: "The scent discovery here is exceptional. Every fragrance feels bespoke, telling a story that lingers.", rating: 5 },
-      { name: "Sophia Khan", address: "Sylhet, Bangladesh", review: "The texture of these scents is rich, velvety, and undeniably premium. Quality is visible in every note.", rating: 4 }
-    ]
-  };
+  try {
+    await dbConnect();
+    const doc = await PageContent.findOne({ pageId: "home" }).lean();
+    return doc?.content || defaultSchema;
+  } catch (error) {
+    console.warn("DB Connection failed during build, using defaults");
+    return defaultSchema;
+  }
 }
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
@@ -53,120 +60,118 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
       </section>
 
       <section id="collection" className="max-w-[1600px] mx-auto px-6 sm:px-12 lg:px-24 py-24">
-        <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-light tracking-[0.3em] uppercase mb-4">{content.section1Title}</h2>
-          <div className="w-12 h-[1px] bg-black dark:bg-white mx-auto opacity-20"></div>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
+          <div>
+            <h2 className="text-xs uppercase tracking-[0.5em] font-bold text-black/20 mb-3">Handcrafted Oils</h2>
+            <h3 className="text-3xl font-light tracking-widest uppercase">{content.section1Title}</h3>
+          </div>
+          <ProductFilters />
         </div>
         
-        <ProductFilters />
         <ProductGrid searchParams={params} />
       </section>
-      
-      {/* --- PREMIUM COLLECTIONS SECTION --- */}
-      <section id="collections-showcase" className="bg-[#fcfcfc] py-32 border-t border-black/5">
+
+      <section className="bg-black text-white py-32 overflow-hidden">
         <div className="max-w-[1600px] mx-auto px-6 sm:px-12 lg:px-24">
-          <div className="text-center mb-16">
-            <h2 className="text-2xl md:text-3xl font-light tracking-[0.3em] uppercase mb-4">{content.section2Title}</h2>
-            <div className="w-12 h-[1px] bg-black dark:bg-white mx-auto opacity-20"></div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-10">
-            {/* Main Feature */}
-            <div className="md:col-span-7 group relative aspect-[16/10] overflow-hidden bg-black">
-              <img 
-                src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80" 
-                alt="Noir Series" 
-                className="object-cover w-full h-full opacity-70 group-hover:scale-105 transition-transform duration-[3s] ease-out" 
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
-              <div className="absolute bottom-12 left-12 right-12 flex justify-between items-end text-white">
-                <div>
-                  <h3 className="text-2xl font-light tracking-[0.3em] uppercase mb-2">The Noir Series</h3>
-                  <p className="text-[9px] uppercase tracking-[0.2em] opacity-60">Shadows & Silhouettes</p>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            <div className="lg:col-span-5 space-y-12">
+              <div>
+                <h2 className="text-xs uppercase tracking-[0.5em] font-bold text-white/20 mb-4">Limited Edition</h2>
+                <h3 className="text-4xl md:text-5xl font-light tracking-widest uppercase leading-tight">
+                  {content.section2Title}
+                </h3>
+              </div>
+              <p className="text-sm md:text-base font-light leading-relaxed opacity-50 tracking-wide max-w-md">
+                Each bottle in our reserve is a testament to the patient art of aging. Discover rare oudh and mystical blends that transcend time.
+              </p>
+              <div className="pt-4">
+                <Link href="/#collection" className="text-[10px] font-bold uppercase tracking-[0.4em] border-b border-white/20 pb-2 hover:border-white transition-colors">
+                  View All Curations
+                </Link>
+              </div>
+            </div>
+            
+            <div className="lg:col-span-7">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="aspect-[16/10] md:aspect-[10/14] bg-white/5 relative group overflow-hidden">
+                  <img 
+                    src="https://images.unsplash.com/photo-1616948648211-09dc3e6eb646?auto=format&fit=crop&q=80" 
+                    className="object-cover w-full h-full opacity-40 group-hover:scale-110 group-hover:opacity-60 transition-all duration-700" 
+                  />
+                  <div className="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-black/80 to-transparent">
+                    <span className="text-[10px] uppercase tracking-widest opacity-60 mb-2">The Oudh Series</span>
+                    <h4 className="text-lg font-light tracking-widest uppercase">Vintage Dehn Al Oudh</h4>
+                  </div>
                 </div>
-                <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500">
-                  <span className="text-xs">→</span>
+                <div className="space-y-8">
+                  <div className="aspect-[16/10] bg-white/5 relative group overflow-hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1547881338-64929745b3d6?auto=format&fit=crop&q=80" 
+                      className="object-cover w-full h-full opacity-40 group-hover:scale-110 group-hover:opacity-60 transition-all duration-700" 
+                    />
+                    <div className="absolute inset-0 p-6 flex flex-col justify-end bg-gradient-to-t from-black/80 to-transparent">
+                      <h4 className="text-sm font-light tracking-widest uppercase">Musk Anthology</h4>
+                    </div>
+                  </div>
+                  <div className="aspect-[16/10] bg-white/5 relative group overflow-hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1615486171448-4fd1cf208462?auto=format&fit=crop&q=80" 
+                      className="object-cover w-full h-full opacity-40 group-hover:scale-110 group-hover:opacity-60 transition-all duration-700" 
+                    />
+                    <div className="absolute inset-0 p-6 flex flex-col justify-end bg-gradient-to-t from-black/80 to-transparent">
+                      <h4 className="text-sm font-light tracking-widest uppercase">Floral Distillations</h4>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-
-            {/* Side Items */}
-            <div className="md:col-span-5 grid grid-cols-1 gap-6 lg:gap-10">
-              {[
-                { name: "Fresh & Aquatic", label: "Azure Waters", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80" },
-                { name: "Floral Essence", label: "Midnight Bloom", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80" }
-              ].map((col, i) => (
-                <div key={i} className="group relative aspect-[16/7] overflow-hidden bg-black">
-                  <img src={col.img} alt={col.name} className="object-cover w-full h-full opacity-60 group-hover:scale-110 transition-transform duration-[3s] ease-out" />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-700" />
-                  <div className="absolute inset-0 flex flex-col justify-center px-10 text-white">
-                    <h3 className="text-sm font-bold tracking-[0.4em] uppercase mb-2">{col.name}</h3>
-                    <p className="text-[8px] uppercase tracking-[0.2em] opacity-0 group-hover:opacity-60 transition-opacity duration-700">{col.label}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
 
-      {/* --- EDITORIAL REVIEWS SECTION --- */}
-      <section className="bg-white pt-32 pb-48 overflow-hidden">
-        <div className="max-w-[1600px] mx-auto px-6 sm:px-12 lg:px-24">
+      {/* Testimonials */}
+      <section className="py-32 bg-white text-black overflow-hidden border-b border-black/5">
+        <div className="max-w-[1200px] mx-auto px-6">
           <div className="text-center mb-24">
-            <h2 className="text-2xl md:text-3xl font-light tracking-[0.3em] uppercase mb-4">What Our Customers Say</h2>
-            <div className="w-16 h-[1px] bg-black/10 mx-auto"></div>
+            <h2 className="text-[10px] uppercase tracking-[0.6em] font-bold text-black/20 mb-4">Voices of Fragmen</h2>
+            <h3 className="text-3xl font-light tracking-widest uppercase">The Connoisseur's Experience</h3>
           </div>
           
-          <div className="relative overflow-hidden group">
-            <div className="flex gap-16 lg:gap-32 animate-scroll w-max pr-16 lg:pr-32">
-              {[...Array(2)].map((_, idx) => (
-                <div key={idx} className="flex gap-16 lg:gap-32 shrink-0">
-                  {(content.reviews && content.reviews.length > 0 ? content.reviews : []).map((rev: any, i: number) => (
-                    <div key={i} className="flex flex-col w-[350px] md:w-[450px]">
-                      <div className="mb-8 relative">
-                        <div className="flex mb-4">
-                          {[...Array(5)].map((_, starIdx) => (
-                            <svg key={starIdx} className={`w-3 h-3 ${starIdx < (rev.rating || 5) ? 'text-black' : 'text-black/10'}`} fill="currentColor" viewBox="0 0 20 20">
-                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                            </svg>
-                          ))}
-                        </div>
-                        
-                        <div className="mb-4">
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="text-black">
-                            <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.409-2.748-1.12zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.409-2.748-1.12z" />
-                          </svg>
-                        </div>
-
-                        <p className="text-lg font-light leading-relaxed text-black/80 tracking-wide relative z-10 italic">
-                          {rev.review}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-5 mt-auto">
-                        <div className="w-12 h-12 rounded-full overflow-hidden bg-black flex items-center justify-center text-white text-lg font-light tracking-widest shrink-0">
-                          {(rev.name || "A")[0].toUpperCase()}
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-bold uppercase tracking-[0.2em] mb-1">{rev.name}</h4>
-                          <p className="text-[11px] uppercase tracking-[0.1em] opacity-50">{rev.address}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12">
+            {(content.reviews || []).map((review: any, i: number) => (
+              <div key={i} className="flex flex-col items-center text-center space-y-8">
+                <div className="w-16 h-16 bg-black flex items-center justify-center rounded-full text-white text-xl font-light tracking-widest">
+                  {review.name.charAt(0)}
                 </div>
-              ))}
-            </div>
+                <div className="space-y-4">
+                  <div className="flex justify-center gap-1">
+                    {[...Array(review.rating || 5)].map((_, i) => (
+                      <svg key={i} className="w-3 h-3 fill-black" viewBox="0 0 24 24">
+                        <path d="M12 .587l3.668 7.431 8.214 1.192-5.941 5.787 1.402 8.178-7.343-3.864-7.343 3.864 1.402-8.178-5.941-5.787 8.214-1.192z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <div className="text-4xl font-serif text-black leading-none h-4">"</div>
+                  <p className="text-sm italic font-light leading-relaxed opacity-70 px-4">
+                    {review.review}
+                  </p>
+                  <div className="pt-4">
+                    <h4 className="text-sm font-bold uppercase tracking-widest">{review.name}</h4>
+                    <p className="text-[9px] uppercase tracking-[0.2em] opacity-40 mt-1">{review.address}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* --- LUXURY FOOTER --- */}
-      <footer className="bg-black text-white pt-32 pb-16">
+      {/* Footer */}
+      <footer className="bg-white text-black py-24 border-t border-black/5">
         <div className="max-w-[1600px] mx-auto px-6 sm:px-12 lg:px-24">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-24 pb-24">
-            <div className="md:col-span-5">
-              <h2 className="text-3xl font-light tracking-[0.5em] uppercase mb-10">{content.heroTitle}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 lg:gap-24 mb-24">
+            <div className="lg:col-span-4">
+              <h2 className="text-2xl font-light tracking-[0.5em] uppercase mb-8">Fragmen</h2>
               <p className="text-xs font-light leading-relaxed opacity-40 uppercase tracking-[0.2em] max-w-sm mb-12 whitespace-pre-line">
                 {content.footerDesc}
               </p>
@@ -200,52 +205,43 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
               </div>
             </div>
             
-            <div className="md:col-span-2">
-              <h4 className="text-[11px] font-bold uppercase tracking-[0.4em] mb-10 text-white/90">Curations</h4>
-              <ul className="space-y-5 text-[10px] uppercase tracking-[0.2em] opacity-40">
-                {['THE OUD RESERVE', 'MUSK ANTHOLOGY', 'BOTANICAL BLENDS', "COLLECTOR'S DEHN AL OUD"].map(item => (
-                  <li key={item} className="hover:opacity-100 hover:translate-x-1 transition-all cursor-pointer">{item}</li>
-                ))}
+            <div className="lg:col-span-2">
+              <h4 className="text-[10px] uppercase tracking-[0.3em] font-bold mb-8 opacity-20">Curations</h4>
+              <ul className="space-y-4 text-[10px] uppercase tracking-widest font-medium opacity-60">
+                <li><Link href="/#collection" className="hover:opacity-50 transition-opacity">The Oud Reserve</Link></li>
+                <li><Link href="/#collection" className="hover:opacity-50 transition-opacity">Musk Anthology</Link></li>
+                <li><Link href="/#collection" className="hover:opacity-50 transition-opacity">Botanical Blends</Link></li>
+                <li><Link href="/#collection" className="hover:opacity-50 transition-opacity">Collector's Dehn Al Oud</Link></li>
               </ul>
             </div>
-
-            <div className="md:col-span-2">
-              <h4 className="text-[11px] font-bold uppercase tracking-[0.4em] mb-10 text-white/90">Maison</h4>
-              <ul className="space-y-5 text-[10px] uppercase tracking-[0.2em] opacity-40">
-                {['OUR LEGACY', 'DISTILLATION PROCESS', 'ETHICAL SOURCING', 'BESPOKE BLENDING'].map(item => (
-                  <li key={item} className="hover:opacity-100 hover:translate-x-1 transition-all cursor-pointer">{item}</li>
-                ))}
+            
+            <div className="lg:col-span-2">
+              <h4 className="text-[10px] uppercase tracking-[0.3em] font-bold mb-8 opacity-20">Maison</h4>
+              <ul className="space-y-4 text-[10px] uppercase tracking-widest font-medium opacity-60">
+                <li><Link href="/about" className="hover:opacity-50 transition-opacity">Our Legacy</Link></li>
+                <li><Link href="/process" className="hover:opacity-50 transition-opacity">Distillation Process</Link></li>
+                <li><Link href="/ethical" className="hover:opacity-50 transition-opacity">Ethical Sourcing</Link></li>
+                <li><Link href="/bespoke" className="hover:opacity-50 transition-opacity">Bespoke Blending</Link></li>
               </ul>
             </div>
-
-            <div className="md:col-span-3">
-              <h4 className="text-[11px] font-bold uppercase tracking-[0.4em] mb-10 text-white/90">Newsletter</h4>
-              <p className="text-[10px] uppercase tracking-[0.2em] opacity-40 mb-8 leading-relaxed">
-                JOIN OUR EXCLUSIVE CIRCLE FOR FRAGRANCE RELEASES AND HERITAGE STORIES.
+            
+            <div className="lg:col-span-4">
+              <h4 className="text-[10px] uppercase tracking-[0.3em] font-bold mb-8 opacity-20">Newsletter</h4>
+              <p className="text-[10px] uppercase tracking-widest leading-relaxed opacity-40 mb-8">
+                Join our exclusive circle for fragrance releases and heritage stories.
               </p>
-              <div className="relative border-b border-white/20 pb-4 group">
-                <input 
-                  type="email" 
-                  placeholder="YOUR EMAIL" 
-                  className="bg-transparent text-[10px] uppercase tracking-widest outline-none w-full placeholder:opacity-20" 
-                />
-                <button className="absolute right-0 bottom-4 text-[10px] font-bold uppercase tracking-widest hover:opacity-50 transition-opacity">
-                  Subscribe
-                </button>
-                <div className="absolute bottom-0 left-0 w-0 h-[1px] bg-white group-focus-within:w-full transition-all duration-700"></div>
-              </div>
+              <form className="flex border-b border-black/10 pb-2">
+                <input type="email" placeholder="YOUR EMAIL" className="bg-transparent text-[10px] tracking-widest uppercase outline-none flex-1 placeholder:opacity-20" />
+                <button className="text-[10px] font-bold uppercase tracking-widest">Subscribe</button>
+              </form>
             </div>
           </div>
-
-          <div className="pt-16 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-10">
-            <div className="flex gap-12 text-[8px] uppercase tracking-[0.3em] opacity-30">
-              <p>© {new Date().getFullYear()} {content.heroTitle} Maison de Parfum</p>
-              <span className="hover:opacity-100 cursor-pointer transition-opacity">Global Distribution</span>
-            </div>
-            <div className="flex gap-10 text-[8px] uppercase tracking-[0.3em] opacity-30">
-              <span className="hover:opacity-100 cursor-pointer transition-opacity">Privacy</span>
-              <span className="hover:opacity-100 cursor-pointer transition-opacity">Terms</span>
-              <span className="hover:opacity-100 cursor-pointer transition-opacity">Sitemap</span>
+          
+          <div className="pt-12 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p className="text-[9px] uppercase tracking-widest opacity-30">© 2024 Fragmen Artisan Perfumery. All Rights Reserved.</p>
+            <div className="flex gap-8 text-[9px] uppercase tracking-widest opacity-30">
+              <Link href="/privacy" className="hover:opacity-100">Privacy</Link>
+              <Link href="/terms" className="hover:opacity-100">Terms</Link>
             </div>
           </div>
         </div>
@@ -253,3 +249,5 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
     </main>
   );
 }
+
+import Link from "next/link";

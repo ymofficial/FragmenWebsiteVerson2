@@ -2,22 +2,29 @@ import dbConnect from "@/lib/db";
 import PageContent from "@/models/PageContent";
 import SupportForm from "@/components/support/SupportForm";
 
+const defaultSupportContent = {
+  title: "Customer Support",
+  subtitle: "We are here to assist you with your olfactory journey. Feel free to reach out to our artisans.",
+  email: "care@fragmen.com",
+  phone: "+880 1XXX-XXXXXX",
+  whatsapp: "+880 1XXX-XXXXXX",
+  address: "House 12, Road 4, Dhanmondi, Dhaka, Bangladesh",
+  faqs: [
+    { q: "How long does the scent last?", a: "Our pure attars typically last 8-12 hours on skin and up to 48 hours on clothing." },
+    { q: "Do you ship internationally?", a: "Yes, we ship our artisanal oils globally via express courier services." },
+    { q: "Are these oils pure?", a: "Every drop is guaranteed pure, undiluted, and free from any synthetic extenders." }
+  ]
+};
+
 async function getSupportContent() {
-  await dbConnect();
-  const doc = await PageContent.findOne({ pageId: "support" }).lean();
-  return doc?.content || {
-    title: "Customer Support",
-    subtitle: "We are here to assist you with your olfactory journey. Feel free to reach out to our artisans.",
-    email: "care@fragmen.com",
-    phone: "+880 1XXX-XXXXXX",
-    whatsapp: "+880 1XXX-XXXXXX",
-    address: "House 12, Road 4, Dhanmondi, Dhaka, Bangladesh",
-    faqs: [
-      { q: "How long does the scent last?", a: "Our pure attars typically last 8-12 hours on skin and up to 48 hours on clothing." },
-      { q: "Do you ship internationally?", a: "Yes, we ship our artisanal oils globally via express courier services." },
-      { q: "Are these oils pure?", a: "Every drop is guaranteed pure, undiluted, and free from any synthetic extenders." }
-    ]
-  };
+  try {
+    await dbConnect();
+    const doc = await PageContent.findOne({ pageId: "support" }).lean();
+    return doc?.content || defaultSupportContent;
+  } catch (error) {
+    console.warn("DB Connection failed during build for support page, using defaults");
+    return defaultSupportContent;
+  }
 }
 
 export default async function SupportPage() {
