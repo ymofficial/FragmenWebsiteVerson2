@@ -37,61 +37,49 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
 
   return (
     <main className="flex-1">
-      {/* Hero Section - Optimized for Exact Image Height on Mobile */}
-      <section className="relative w-full h-auto bg-black text-white overflow-hidden">
-        <div className="w-full h-full flex flex-col">
-           {/* Mobile Image Container - No bars */}
-           <div className="relative w-full sm:hidden">
-              <img 
-                src={content.heroImage} 
-                alt="Fragmen Hero Mobile" 
-                className="w-full h-auto block bg-black"
-              />
-           </div>
-           
-           {/* Desktop/Tablet Background Image */}
-           <div className="hidden sm:block relative h-[80vh] min-h-[600px] z-0">
-              <img 
-                src={content.heroImage} 
-                alt="Fragmen Hero Desktop" 
-                className="absolute inset-0 object-cover w-full h-full object-center opacity-70"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
-              
-              {/* Desktop Content Overlay */}
-              <div className="relative z-20 text-center px-6 max-w-4xl mx-auto h-full flex flex-col items-center justify-center">
-                {content.heroTitle && (
-                  <h1 className="text-4xl sm:text-5xl md:text-7xl font-light tracking-[0.2em] sm:tracking-[0.4em] mb-4 sm:mb-6 uppercase drop-shadow-lg">
-                    {content.heroTitle}
-                  </h1>
-                )}
-                {content.heroSubtitle && (
-                  <p className="text-[10px] sm:text-xs md:text-base font-light tracking-[0.2em] uppercase opacity-90 mb-8 sm:mb-10 max-w-xl leading-relaxed whitespace-pre-line drop-shadow-md">
-                    {content.heroSubtitle}
-                  </p>
-                )}
-                <a href="#collection" className="text-[10px] sm:text-xs uppercase tracking-[0.3em] border-b border-white pb-2 hover:opacity-70 transition-opacity">
-                  Explore Collection
-                </a>
-              </div>
-           </div>
+      {/* Hero Section - Unified for PC and Mobile */}
+      <section className="relative w-full overflow-hidden bg-black text-white">
+        {/* Mobile View: Dynamic Height based on Image */}
+        <div className="block sm:hidden relative w-full h-auto">
+          <img 
+            src={content.heroImage} 
+            alt="Fragmen Hero Mobile" 
+            className="w-full h-auto block"
+          />
+          {/* Overlay Text for Mobile (Subtle) */}
+          <div className="absolute inset-0 bg-black/20 flex flex-col items-center justify-center p-6 text-center">
+             <a href="#collection" className="mt-auto text-[10px] uppercase tracking-[0.3em] border-b border-white/40 pb-1">
+                Explore
+             </a>
+          </div>
+        </div>
 
-           {/* Mobile Content (Below Image) */}
-           <div className="sm:hidden relative z-20 text-center px-6 py-10 flex flex-col items-center justify-center bg-black">
-              {content.heroTitle && (
-                <h1 className="text-3xl font-light tracking-[0.2em] mb-4 uppercase">
-                  {content.heroTitle}
-                </h1>
-              )}
-              {content.heroSubtitle && (
-                <p className="text-[10px] font-light tracking-[0.2em] uppercase opacity-60 mb-8 max-w-xl leading-relaxed whitespace-pre-line">
-                  {content.heroSubtitle}
-                </p>
-              )}
-              <a href="#collection" className="text-[10px] uppercase tracking-[0.3em] border-b border-white/20 pb-2">
-                Explore Collection
-              </a>
-           </div>
+        {/* Desktop View: Traditional Hero */}
+        <div className="hidden sm:flex relative h-[80vh] min-h-[600px] items-center justify-center">
+          <div className="absolute inset-0 z-0">
+            <img 
+              src={content.heroImage} 
+              alt="Fragmen Hero Desktop" 
+              className="object-cover w-full h-full object-center opacity-70"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
+          </div>
+          
+          <div className="relative z-20 text-center px-6 max-w-4xl mx-auto">
+            {content.heroTitle && (
+              <h1 className="text-5xl md:text-7xl font-light tracking-[0.4em] mb-6 uppercase drop-shadow-lg">
+                {content.heroTitle}
+              </h1>
+            )}
+            {content.heroSubtitle && (
+              <p className="text-xs md:text-base font-light tracking-[0.2em] uppercase opacity-90 mb-10 max-w-xl mx-auto leading-relaxed whitespace-pre-line drop-shadow-md">
+                {content.heroSubtitle}
+              </p>
+            )}
+            <a href="#collection" className="text-[10px] sm:text-xs uppercase tracking-[0.3em] border-b border-white pb-2 hover:opacity-70 transition-opacity">
+              Explore Collection
+            </a>
+          </div>
         </div>
       </section>
 
