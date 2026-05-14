@@ -37,35 +37,21 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
 
   return (
     <main className="flex-1">
-      {/* Hero Section - Unified for PC and Mobile */}
-      <section className="relative w-full overflow-hidden bg-black text-white">
-        {/* Mobile View: Dynamic Height based on Image */}
-        <div className="block sm:hidden relative w-full h-auto">
+      {/* Hero Section - Single Container for better stability */}
+      <section className="relative w-full bg-black text-white overflow-hidden">
+        {/* The Image - Responsive positioning */}
+        <div className="relative w-full h-auto sm:h-[80vh] sm:min-h-[600px]">
           <img 
             src={content.heroImage} 
-            alt="Fragmen Hero Mobile" 
-            className="w-full h-auto block"
+            alt="Fragmen Hero" 
+            className="w-full h-auto sm:h-full sm:object-cover object-center block sm:opacity-70"
           />
-          {/* Overlay Text for Mobile (Subtle) */}
-          <div className="absolute inset-0 bg-black/20 flex flex-col items-center justify-center p-6 text-center">
-             <a href="#collection" className="mt-auto text-[10px] uppercase tracking-[0.3em] border-b border-white/40 pb-1">
-                Explore
-             </a>
-          </div>
-        </div>
-
-        {/* Desktop View: Traditional Hero */}
-        <div className="hidden sm:flex relative h-[80vh] min-h-[600px] items-center justify-center">
-          <div className="absolute inset-0 z-0">
-            <img 
-              src={content.heroImage} 
-              alt="Fragmen Hero Desktop" 
-              className="object-cover w-full h-full object-center opacity-70"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
-          </div>
           
-          <div className="relative z-20 text-center px-6 max-w-4xl mx-auto">
+          {/* Subtle Overlay for better text readability on PC */}
+          <div className="absolute inset-0 bg-black/10 sm:bg-gradient-to-b sm:from-black/20 sm:via-transparent sm:to-black/60 pointer-events-none" />
+
+          {/* Desktop/Tablet Text Content (Hidden on Mobile if image has text) */}
+          <div className="hidden sm:flex absolute inset-0 z-20 flex-col items-center justify-center text-center px-6 max-w-4xl mx-auto">
             {content.heroTitle && (
               <h1 className="text-5xl md:text-7xl font-light tracking-[0.4em] mb-6 uppercase drop-shadow-lg">
                 {content.heroTitle}
@@ -78,6 +64,13 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
             )}
             <a href="#collection" className="text-[10px] sm:text-xs uppercase tracking-[0.3em] border-b border-white pb-2 hover:opacity-70 transition-opacity">
               Explore Collection
+            </a>
+          </div>
+
+          {/* Mobile Text Content (Very minimal to avoid black bars) */}
+          <div className="sm:hidden absolute bottom-4 left-0 right-0 z-20 flex justify-center">
+            <a href="#collection" className="text-[10px] uppercase tracking-[0.3em] border-b border-white/40 pb-1">
+              Explore
             </a>
           </div>
         </div>
