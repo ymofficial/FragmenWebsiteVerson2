@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ShoppingBag, User as UserIcon } from "lucide-react";
+import { ShoppingBag, User as UserIcon, Menu, X } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import SearchBar from "./SearchBar";
 
@@ -13,6 +13,7 @@ export default function Header() {
   const router = useRouter();
   const [session, setSession] = useState<any>(null);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { cartCount } = useCart();
   
   useEffect(() => {
@@ -20,6 +21,10 @@ export default function Header() {
       .then(res => res.json())
       .then(data => setSession(data))
       .catch(() => setSession({ isLoggedIn: false }));
+  }, [pathname]);
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
   }, [pathname]);
 
   const handleLogout = async () => {
@@ -31,25 +36,43 @@ export default function Header() {
 
   if (pathname.startsWith("/admin")) return null;
 
+  const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "Collections", href: "/#collection" },
+    { name: "Support", href: "/support" },
+  ];
+
   return (
     <header className="sticky top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-black/5">
-      <div className="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-16 flex justify-between items-center h-24">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-10 lg:px-16 flex justify-between items-center h-20 sm:h-24">
         
-        {/* Left: Brand Name */}
-        <Link href="/" className="text-xl sm:text-2xl font-light tracking-[0.5em] uppercase flex-1">
+        {/* Left: Mobile Menu Button */}
+        <button 
+          className="lg:hidden p-2 -ml-2"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          {isMobileMenuOpen ? <X size={24} strokeWidth={1.5} /> : <Menu size={24} strokeWidth={1.5} />}
+        </button>
+
+        {/* Left/Center: Brand Name */}
+        <Link href="/" className="text-lg sm:text-2xl font-light tracking-[0.4em] sm:tracking-[0.5em] uppercase lg:flex-1">
           Fragmen
         </Link>
 
-        {/* Middle: Navigation Links */}
-        <div className="flex gap-10 sm:gap-14 lg:gap-24 text-[11px] sm:text-[13px] uppercase tracking-[0.2em] sm:tracking-[0.3em] font-semibold flex-1 justify-center whitespace-nowrap px-4">
-          <Link href="/" className="hover:text-black/50 transition-colors text-black">Home</Link>
-          <Link href="/#collection" className="hover:text-black/50 transition-colors text-black">Collections</Link>
-          <Link href="/support" className="hover:text-black/50 transition-colors text-black">Support</Link>
-        </div>
+        {/* Middle: Desktop Navigation */}
+        <nav className="hidden lg:flex gap-10 xl:gap-24 text-[11px] xl:text-[13px] uppercase tracking-[0.3em] font-semibold flex-1 justify-center whitespace-nowrap px-4">
+          {navLinks.map((link) => (
+            <Link key={link.name} href={link.href} className="hover:text-black/50 transition-colors text-black">
+              {link.name}
+            </Link>
+          ))}
+        </nav>
         
         {/* Right: Actions */}
-        <div className="flex items-center gap-4 sm:gap-6 lg:gap-8 flex-1 justify-end">
-          <SearchBar />
+        <div className="flex items-center gap-2 sm:gap-6 lg:gap-8 flex-1 justify-end">
+          <div className="hidden sm:block">
+            <SearchBar />
+          </div>
           
           <Link href="/cart" className="relative group p-2 shrink-0">
             <ShoppingBag size={20} strokeWidth={1.5} className="group-hover:opacity-50 transition-opacity" />
@@ -62,11 +85,11 @@ export default function Header() {
           
           <div className="relative">
             {session?.isLoggedIn ? (
-              <div className="flex items-center gap-6">
+              <div className="flex items-center">
                 {session.isAdmin ? (
                   <Link href="/admin/dashboard" className="flex items-center gap-2 group">
                     <UserIcon size={18} strokeWidth={1.5} className="group-hover:opacity-50 transition-opacity" />
-                    <span className="text-[11px] sm:text-[12px] uppercase tracking-[0.3em] font-bold hover:text-black/50 transition-colors text-black">
+                    <span className="hidden sm:block text-[11px] sm:text-[12px] uppercase tracking-[0.3em] font-bold hover:text-black/50 transition-colors text-black">
                       {session.user?.name || "Admin"}
                     </span>
                   </Link>
@@ -77,7 +100,7 @@ export default function Header() {
                       className="flex items-center gap-2 group"
                     >
                       <UserIcon size={18} strokeWidth={1.5} className="group-hover:opacity-50 transition-opacity" />
-                      <span className="text-[11px] sm:text-[12px] uppercase tracking-[0.3em] font-bold hover:text-black/50 transition-colors text-black">
+                      <span className="hidden sm:block text-[11px] sm:text-[12px] uppercase tracking-[0.3em] font-bold hover:text-black/50 transition-colors text-black">
                         {session.user?.name || "Profile"}
                       </span>
                     </button>
@@ -109,11 +132,32 @@ export default function Header() {
             )}
           </div>
         </div>
-        
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 top-20 bg-white z-[100] animate-in slide-in-from-left duration-300">
+          <nav className="flex flex-col p-8 space-y-8">
+            <div className="pb-4">
+              <SearchBar />
+            </div>
+            {navLinks.map((link) => (
+              <Link 
+                key={link.name} 
+                href={link.href} 
+                className="text-lg font-light uppercase tracking-[0.3em] border-b border-black/5 pb-4"
+              >
+                {link.name}
+              </Link>
+            ))}
+            {session?.isLoggedIn && (
+              <Link href="/orders" className="text-lg font-light uppercase tracking-[0.3em] border-b border-black/5 pb-4">
+                My Orders
+              </Link>
+            )}
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
-
-
-

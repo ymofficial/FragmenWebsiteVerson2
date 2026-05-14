@@ -37,54 +37,62 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
 
   return (
     <main className="flex-1">
-      <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center bg-black text-white overflow-hidden">
+      {/* Hero Section */}
+      <section className="relative h-[70vh] sm:h-[80vh] min-h-[500px] flex items-center justify-center bg-black text-white overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
             src={content.heroImage} 
             alt="Fragmen Hero" 
-            className="object-cover w-full h-full"
+            className="object-cover w-full h-full object-center opacity-70"
           />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
         </div>
-        <div className="relative z-20 text-center px-4 max-w-4xl mx-auto flex flex-col items-center">
+        <div className="relative z-20 text-center px-6 max-w-4xl mx-auto flex flex-col items-center">
           {content.heroTitle && (
-            <h1 className="text-5xl md:text-7xl font-light tracking-[0.4em] mb-6 uppercase drop-shadow-lg">{content.heroTitle}</h1>
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-light tracking-[0.2em] sm:tracking-[0.4em] mb-6 uppercase drop-shadow-lg animate-in fade-in slide-in-from-bottom-8 duration-1000">
+              {content.heroTitle}
+            </h1>
           )}
           {content.heroSubtitle && (
-            <p className="text-sm md:text-base font-light tracking-[0.2em] uppercase opacity-90 mb-10 max-w-xl leading-relaxed whitespace-pre-line drop-shadow-md">
+            <p className="text-[10px] sm:text-xs md:text-base font-light tracking-[0.2em] uppercase opacity-90 mb-10 max-w-xl leading-relaxed whitespace-pre-line drop-shadow-md animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-200">
               {content.heroSubtitle}
             </p>
           )}
           {content.heroTitle && (
-            <a href="#collection" className="text-xs uppercase tracking-[0.3em] border-b border-white pb-2 hover:opacity-70 transition-opacity shadow-sm">
+            <a href="#collection" className="text-[10px] sm:text-xs uppercase tracking-[0.3em] border-b border-white pb-2 hover:opacity-70 transition-opacity shadow-sm animate-in fade-in slide-in-from-bottom-16 duration-1000 delay-500">
               Explore Collection
             </a>
           )}
         </div>
       </section>
 
-      <section id="collection" className="max-w-[1600px] mx-auto px-6 sm:px-12 lg:px-24 py-24">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
+      {/* Collection Section */}
+      <section id="collection" className="max-w-[1600px] mx-auto px-6 sm:px-12 lg:px-24 py-16 sm:py-24">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-12 sm:mb-16">
           <div>
-            <h2 className="text-xs uppercase tracking-[0.5em] font-bold text-black/20 mb-3">Handcrafted Oils</h2>
-            <h3 className="text-3xl font-light tracking-widest uppercase">{content.section1Title}</h3>
+            <h2 className="text-[10px] uppercase tracking-[0.5em] font-bold text-black/20 mb-3">Handcrafted Oils</h2>
+            <h3 className="text-2xl sm:text-3xl font-light tracking-widest uppercase">{content.section1Title}</h3>
           </div>
-          <ProductFilters />
+          <div className="w-full lg:w-auto">
+            <ProductFilters />
+          </div>
         </div>
         
         <ProductGrid searchParams={params} />
       </section>
 
-      <section className="bg-black text-white py-32 overflow-hidden">
+      {/* Curation Section */}
+      <section className="bg-black text-white py-24 sm:py-32 overflow-hidden">
         <div className="max-w-[1600px] mx-auto px-6 sm:px-12 lg:px-24">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-            <div className="lg:col-span-5 space-y-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 sm:gap-16 items-center">
+            <div className="lg:col-span-5 space-y-8 sm:space-y-12">
               <div>
-                <h2 className="text-xs uppercase tracking-[0.5em] font-bold text-white/20 mb-4">Limited Edition</h2>
-                <h3 className="text-4xl md:text-5xl font-light tracking-widest uppercase leading-tight">
+                <h2 className="text-[10px] uppercase tracking-[0.5em] font-bold text-white/20 mb-4">Limited Edition</h2>
+                <h3 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-widest uppercase leading-tight">
                   {content.section2Title}
                 </h3>
               </div>
-              <p className="text-sm md:text-base font-light leading-relaxed opacity-50 tracking-wide max-w-md">
+              <p className="text-xs sm:text-sm md:text-base font-light leading-relaxed opacity-50 tracking-wide max-w-md">
                 Each bottle in our reserve is a testament to the patient art of aging. Discover rare oudh and mystical blends that transcend time.
               </p>
               <div className="pt-4">
@@ -95,25 +103,25 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
             </div>
             
             <div className="lg:col-span-7">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
                 <div className="aspect-[16/10] md:aspect-[10/14] bg-white/5 relative group overflow-hidden">
                   <img 
                     src="https://images.unsplash.com/photo-1616948648211-09dc3e6eb646?auto=format&fit=crop&q=80" 
                     className="object-cover w-full h-full opacity-40 group-hover:scale-110 group-hover:opacity-60 transition-all duration-700" 
                   />
-                  <div className="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-black/80 to-transparent">
+                  <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-end bg-gradient-to-t from-black/80 to-transparent">
                     <span className="text-[10px] uppercase tracking-widest opacity-60 mb-2">The Oudh Series</span>
-                    <h4 className="text-lg font-light tracking-widest uppercase">Vintage Dehn Al Oudh</h4>
+                    <h4 className="text-base sm:text-lg font-light tracking-widest uppercase">Vintage Dehn Al Oudh</h4>
                   </div>
                 </div>
-                <div className="space-y-8">
+                <div className="space-y-6 sm:space-y-8">
                   <div className="aspect-[16/10] bg-white/5 relative group overflow-hidden">
                     <img 
                       src="https://images.unsplash.com/photo-1547881338-64929745b3d6?auto=format&fit=crop&q=80" 
                       className="object-cover w-full h-full opacity-40 group-hover:scale-110 group-hover:opacity-60 transition-all duration-700" 
                     />
                     <div className="absolute inset-0 p-6 flex flex-col justify-end bg-gradient-to-t from-black/80 to-transparent">
-                      <h4 className="text-sm font-light tracking-widest uppercase">Musk Anthology</h4>
+                      <h4 className="text-xs sm:text-sm font-light tracking-widest uppercase">Musk Anthology</h4>
                     </div>
                   </div>
                   <div className="aspect-[16/10] bg-white/5 relative group overflow-hidden">
@@ -122,7 +130,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
                       className="object-cover w-full h-full opacity-40 group-hover:scale-110 group-hover:opacity-60 transition-all duration-700" 
                     />
                     <div className="absolute inset-0 p-6 flex flex-col justify-end bg-gradient-to-t from-black/80 to-transparent">
-                      <h4 className="text-sm font-light tracking-widest uppercase">Floral Distillations</h4>
+                      <h4 className="text-xs sm:text-sm font-light tracking-widest uppercase">Floral Distillations</h4>
                     </div>
                   </div>
                 </div>
@@ -133,17 +141,17 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
       </section>
 
       {/* Testimonials */}
-      <section className="py-32 bg-white text-black overflow-hidden border-b border-black/5">
+      <section className="py-24 sm:py-32 bg-white text-black overflow-hidden border-b border-black/5">
         <div className="max-w-[1200px] mx-auto px-6">
-          <div className="text-center mb-24">
+          <div className="text-center mb-16 sm:mb-24">
             <h2 className="text-[10px] uppercase tracking-[0.6em] font-bold text-black/20 mb-4">Voices of Fragmen</h2>
-            <h3 className="text-3xl font-light tracking-widest uppercase">The Connoisseur's Experience</h3>
+            <h3 className="text-2xl sm:text-3xl font-light tracking-widest uppercase">The Connoisseur's Experience</h3>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 sm:gap-16">
             {(content.reviews || []).map((review: any, i: number) => (
-              <div key={i} className="flex flex-col items-center text-center space-y-8">
-                <div className="w-16 h-16 bg-black flex items-center justify-center rounded-full text-white text-xl font-light tracking-widest">
+              <div key={i} className="flex flex-col items-center text-center space-y-6 sm:space-y-8">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-black flex items-center justify-center rounded-full text-white text-lg sm:text-xl font-light tracking-widest">
                   {review.name.charAt(0)}
                 </div>
                 <div className="space-y-4">
@@ -154,13 +162,13 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
                       </svg>
                     ))}
                   </div>
-                  <div className="text-4xl font-serif text-black leading-none h-4">"</div>
-                  <p className="text-sm italic font-light leading-relaxed opacity-70 px-4">
+                  <div className="text-3xl sm:text-4xl font-serif text-black leading-none h-4">"</div>
+                  <p className="text-[13px] sm:text-sm italic font-light leading-relaxed opacity-70 px-4">
                     {review.review}
                   </p>
                   <div className="pt-4">
-                    <h4 className="text-sm font-bold uppercase tracking-widest">{review.name}</h4>
-                    <p className="text-[9px] uppercase tracking-[0.2em] opacity-40 mt-1">{review.address}</p>
+                    <h4 className="text-[11px] sm:text-sm font-bold uppercase tracking-widest">{review.name}</h4>
+                    <p className="text-[8px] sm:text-[9px] uppercase tracking-[0.2em] opacity-40 mt-1">{review.address}</p>
                   </div>
                 </div>
               </div>
@@ -170,12 +178,12 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
       </section>
 
       {/* Footer */}
-      <footer className="bg-white text-black py-24 border-t border-black/5">
+      <footer className="bg-white text-black py-16 sm:py-24 border-t border-black/5">
         <div className="max-w-[1600px] mx-auto px-6 sm:px-12 lg:px-24">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 lg:gap-24 mb-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 sm:gap-16 lg:gap-24 mb-16 sm:mb-24">
             <div className="lg:col-span-4">
               <h2 className="text-2xl font-light tracking-[0.5em] uppercase mb-8">Fragmen</h2>
-              <p className="text-xs font-light leading-relaxed opacity-40 uppercase tracking-[0.2em] max-w-sm mb-12 whitespace-pre-line">
+              <p className="text-[10px] font-light leading-relaxed opacity-40 uppercase tracking-[0.2em] max-w-sm mb-12 whitespace-pre-line">
                 {content.footerDesc}
               </p>
               <div className="flex gap-8">
