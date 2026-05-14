@@ -184,8 +184,8 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-white text-black py-16 sm:py-24 border-t border-black/5">
+      {/* Footer - Updated to Black Background */}
+      <footer className="bg-black text-white py-16 sm:py-24 border-t border-white/5">
         <div className="max-w-[1600px] mx-auto px-6 sm:px-12 lg:px-24">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 sm:gap-16 lg:gap-24 mb-16 sm:mb-24">
             <div className="lg:col-span-4">
@@ -248,14 +248,14 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
               <p className="text-[10px] uppercase tracking-widest leading-relaxed opacity-40 mb-8">
                 Join our exclusive circle for fragrance releases and heritage stories.
               </p>
-              <form className="flex border-b border-black/10 pb-2">
-                <input type="email" placeholder="YOUR EMAIL" className="bg-transparent text-[10px] tracking-widest uppercase outline-none flex-1 placeholder:opacity-20" />
+              <form className="flex border-b border-white/10 pb-2">
+                <input type="email" placeholder="YOUR EMAIL" className="bg-transparent text-[10px] tracking-widest uppercase outline-none flex-1 placeholder:opacity-20 text-white" />
                 <button className="text-[10px] font-bold uppercase tracking-widest">Subscribe</button>
               </form>
             </div>
           </div>
           
-          <div className="pt-12 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
             <p className="text-[9px] uppercase tracking-widest opacity-30">© 2024 Fragmen Artisan Perfumery. All Rights Reserved.</p>
             <div className="flex gap-8 text-[9px] uppercase tracking-widest opacity-30">
               <Link href="/privacy" className="hover:opacity-100">Privacy</Link>
