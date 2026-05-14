@@ -65,7 +65,7 @@ export default function AdminOrders() {
             <div className="px-8 py-6 bg-black/[0.01] border-b border-black/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="flex items-start gap-6">
                 <div className="text-sm font-bold uppercase tracking-widest pt-1 border-r border-black/10 pr-6 min-w-[100px]">
-                  Order {i + 1}
+                  Order {orders.length - i}
                 </div>
                 <div>
                   <div className="flex items-center gap-3 mb-1">
