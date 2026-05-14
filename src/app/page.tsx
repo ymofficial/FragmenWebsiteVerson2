@@ -37,32 +37,44 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
 
   return (
     <main className="flex-1">
-      {/* Hero Section */}
-      <section className="relative h-[70vh] sm:h-[80vh] min-h-[500px] flex items-center justify-center bg-black text-white overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src={content.heroImage} 
-            alt="Fragmen Hero" 
-            className="object-cover w-full h-full object-center opacity-70"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
-        </div>
-        <div className="relative z-20 text-center px-6 max-w-4xl mx-auto flex flex-col items-center">
-          {content.heroTitle && (
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-light tracking-[0.2em] sm:tracking-[0.4em] mb-6 uppercase drop-shadow-lg animate-in fade-in slide-in-from-bottom-8 duration-1000">
-              {content.heroTitle}
-            </h1>
-          )}
-          {content.heroSubtitle && (
-            <p className="text-[10px] sm:text-xs md:text-base font-light tracking-[0.2em] uppercase opacity-90 mb-10 max-w-xl leading-relaxed whitespace-pre-line drop-shadow-md animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-200">
-              {content.heroSubtitle}
-            </p>
-          )}
-          {content.heroTitle && (
-            <a href="#collection" className="text-[10px] sm:text-xs uppercase tracking-[0.3em] border-b border-white pb-2 hover:opacity-70 transition-opacity shadow-sm animate-in fade-in slide-in-from-bottom-16 duration-1000 delay-500">
-              Explore Collection
-            </a>
-          )}
+      {/* Hero Section - Optimized for Full Visibility on Mobile */}
+      <section className="relative w-full h-auto min-h-[400px] sm:h-[80vh] flex items-center justify-center bg-black text-white overflow-hidden">
+        <div className="w-full h-full flex flex-col">
+           {/* Mobile Image Container */}
+           <div className="relative w-full aspect-[4/5] sm:hidden">
+              <img 
+                src={content.heroImage} 
+                alt="Fragmen Hero Mobile" 
+                className="object-contain w-full h-full bg-black"
+              />
+           </div>
+           
+           {/* Desktop/Tablet Background Image */}
+           <div className="hidden sm:block absolute inset-0 z-0">
+              <img 
+                src={content.heroImage} 
+                alt="Fragmen Hero Desktop" 
+                className="object-cover w-full h-full object-center opacity-70"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
+           </div>
+
+           {/* Content Overlay */}
+           <div className="relative z-20 text-center px-6 py-12 sm:py-0 sm:absolute sm:inset-0 flex flex-col items-center justify-center bg-black sm:bg-transparent">
+              {content.heroTitle && (
+                <h1 className="text-4xl sm:text-5xl md:text-7xl font-light tracking-[0.2em] sm:tracking-[0.4em] mb-4 sm:mb-6 uppercase drop-shadow-lg">
+                  {content.heroTitle}
+                </h1>
+              )}
+              {content.heroSubtitle && (
+                <p className="text-[10px] sm:text-xs md:text-base font-light tracking-[0.2em] uppercase opacity-60 sm:opacity-90 mb-8 sm:mb-10 max-w-xl leading-relaxed whitespace-pre-line drop-shadow-md">
+                  {content.heroSubtitle}
+                </p>
+              )}
+              <a href="#collection" className="text-[10px] sm:text-xs uppercase tracking-[0.3em] border-b border-white/20 sm:border-white pb-2 hover:opacity-70 transition-opacity">
+                Explore Collection
+              </a>
+           </div>
         </div>
       </section>
 
