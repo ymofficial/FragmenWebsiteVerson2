@@ -20,11 +20,13 @@ const defaultSchema = {
 
 async function getHomeContent() {
   try {
-    await dbConnect();
+    const conn = await dbConnect();
+    if (!conn) return defaultSchema;
+    
     const doc = await PageContent.findOne({ pageId: "home" }).lean();
     return doc?.content || defaultSchema;
   } catch (error) {
-    console.warn("DB Connection failed during build, using defaults");
+    console.warn("Error fetching homepage content:", error);
     return defaultSchema;
   }
 }
