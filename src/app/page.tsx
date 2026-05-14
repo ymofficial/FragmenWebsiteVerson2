@@ -37,42 +37,22 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
 
   return (
     <main className="flex-1">
-      {/* Hero Section - Single Container for better stability */}
-      <section className="relative w-full bg-black text-white overflow-hidden">
-        {/* The Image - Responsive positioning */}
-        <div className="relative w-full h-auto sm:h-[80vh] sm:min-h-[600px]">
+      {/* Hero Section - Minimalist approach for pre-designed banners */}
+      <section className="relative w-full bg-white overflow-hidden">
+        <div className="relative w-full h-auto">
+          {/* Main Banner Image - Natural height on all devices */}
           <img 
             src={content.heroImage} 
-            alt="Fragmen Hero" 
-            className="w-full h-auto sm:h-full sm:object-cover object-center block sm:opacity-70"
+            alt="Fragmen Banner" 
+            className="w-full h-auto block"
           />
           
-          {/* Subtle Overlay for better text readability on PC */}
-          <div className="absolute inset-0 bg-black/10 sm:bg-gradient-to-b sm:from-black/20 sm:via-transparent sm:to-black/60 pointer-events-none" />
-
-          {/* Desktop/Tablet Text Content (Hidden on Mobile if image has text) */}
-          <div className="hidden sm:flex absolute inset-0 z-20 flex-col items-center justify-center text-center px-6 max-w-4xl mx-auto">
-            {content.heroTitle && (
-              <h1 className="text-5xl md:text-7xl font-light tracking-[0.4em] mb-6 uppercase drop-shadow-lg">
-                {content.heroTitle}
-              </h1>
-            )}
-            {content.heroSubtitle && (
-              <p className="text-xs md:text-base font-light tracking-[0.2em] uppercase opacity-90 mb-10 max-w-xl mx-auto leading-relaxed whitespace-pre-line drop-shadow-md">
-                {content.heroSubtitle}
-              </p>
-            )}
-            <a href="#collection" className="text-[10px] sm:text-xs uppercase tracking-[0.3em] border-b border-white pb-2 hover:opacity-70 transition-opacity">
-              Explore Collection
-            </a>
-          </div>
-
-          {/* Mobile Text Content (Very minimal to avoid black bars) */}
-          <div className="sm:hidden absolute bottom-4 left-0 right-0 z-20 flex justify-center">
-            <a href="#collection" className="text-[10px] uppercase tracking-[0.3em] border-b border-white/40 pb-1">
-              Explore
-            </a>
-          </div>
+          {/* Transparent click area to go to collection if needed */}
+          <Link 
+            href="#collection" 
+            className="absolute inset-0 z-10 cursor-pointer"
+            aria-label="View Collection"
+          />
         </div>
       </section>
 
