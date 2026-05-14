@@ -14,7 +14,8 @@ const defaultSchema = {
   reviews: [
     { name: "Elena Vassilieva", address: "Dhaka, Bangladesh", review: "Fragmen has achieved the impossible: a perfect balance of heritage and modern edge. A masterpiece.", rating: 5 },
     { name: "Marcus Thorne", address: "Chittagong, Bangladesh", review: "The scent discovery here is exceptional. Every fragrance feels bespoke, telling a story that lingers.", rating: 5 },
-    { name: "Sophia Khan", address: "Sylhet, Bangladesh", review: "The texture of these scents is rich, velvety, and undeniably premium. Quality is visible in every note.", rating: 4 }
+    { name: "Sophia Khan", address: "Sylhet, Bangladesh", review: "The texture of these scents is rich, velvety, and undeniably premium. Quality is visible in every note.", rating: 4 },
+    { name: "Arif Ahmed", address: "Dhaka, Bangladesh", review: "Absolutely stunning presentation and longevity. Fragmen is the future of artisanal perfumery.", rating: 5 }
   ]
 };
 
@@ -34,20 +35,34 @@ async function getHomeContent() {
 export default async function Home({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const params = await searchParams;
   const content = await getHomeContent();
+  const reviews = content.reviews || defaultSchema.reviews;
 
   return (
     <main className="flex-1">
-      {/* Hero Section - Minimalist approach for pre-designed banners */}
-      <section className="relative w-full bg-white overflow-hidden">
+      {/* CSS for Marquee Animation */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          display: flex;
+          width: max-content;
+          animation: marquee 40s linear infinite;
+        }
+        .animate-marquee:hover {
+          animation-play-state: paused;
+        }
+      `}} />
+
+      {/* Hero Section */}
+      <section className="relative w-full overflow-hidden bg-white">
         <div className="relative w-full h-auto">
-          {/* Main Banner Image - Natural height on all devices */}
           <img 
             src={content.heroImage} 
             alt="Fragmen Banner" 
             className="w-full h-auto block"
           />
-          
-          {/* Transparent click area to go to collection if needed */}
           <Link 
             href="#collection" 
             className="absolute inset-0 z-10 cursor-pointer"
@@ -130,17 +145,19 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Animated Reviews Section */}
       <section className="py-24 sm:py-32 bg-white text-black overflow-hidden border-b border-black/5">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="text-center mb-16 sm:mb-24">
-            <h2 className="text-[10px] uppercase tracking-[0.6em] font-bold text-black/20 mb-4">Voices of Fragmen</h2>
-            <h3 className="text-2xl sm:text-3xl font-light tracking-widest uppercase">The Connoisseur's Experience</h3>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 sm:gap-16">
-            {(content.reviews || []).map((review: any, i: number) => (
-              <div key={i} className="flex flex-col items-center text-center space-y-6 sm:space-y-8">
+        <div className="text-center mb-16 sm:mb-24 px-6">
+          <h2 className="text-[10px] uppercase tracking-[0.6em] font-bold text-black/20 mb-4">Voices of Fragmen</h2>
+          <h3 className="text-2xl sm:text-3xl font-light tracking-widest uppercase">The Connoisseur's Experience</h3>
+        </div>
+        
+        {/* Infinite Marquee Wrapper */}
+        <div className="relative flex overflow-hidden group">
+          <div className="animate-marquee py-4">
+            {/* First set of reviews */}
+            {[...reviews, ...reviews].map((review: any, i: number) => (
+              <div key={i} className="w-[300px] sm:w-[450px] shrink-0 px-8 sm:px-12 flex flex-col items-center text-center space-y-6 sm:space-y-8">
                 <div className="w-12 h-12 sm:w-16 sm:h-16 bg-black flex items-center justify-center rounded-full text-white text-lg sm:text-xl font-light tracking-widest">
                   {review.name.charAt(0)}
                 </div>
@@ -153,10 +170,10 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
                     ))}
                   </div>
                   <div className="text-3xl sm:text-4xl font-serif text-black leading-none h-4">"</div>
-                  <p className="text-[13px] sm:text-sm italic font-light leading-relaxed opacity-70 px-4">
+                  <p className="text-[12px] sm:text-[14px] italic font-light leading-relaxed opacity-70">
                     {review.review}
                   </p>
-                  <div className="pt-4">
+                  <div className="pt-2">
                     <h4 className="text-[11px] sm:text-sm font-bold uppercase tracking-widest">{review.name}</h4>
                     <p className="text-[8px] sm:text-[9px] uppercase tracking-[0.2em] opacity-40 mt-1">{review.address}</p>
                   </div>
