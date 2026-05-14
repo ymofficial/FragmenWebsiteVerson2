@@ -26,9 +26,15 @@ export async function POST(req: Request) {
 
     await dbConnect();
 
+    const cleanedItems = items.map((item: any) => ({
+      ...item,
+      // Strip size suffix if present (e.g., "id-15ml" -> "id")
+      product: typeof item.product === 'string' ? item.product.split('-')[0] : item.product
+    }));
+
     const order = await Order.create({
       user: payload.userId,
-      items,
+      items: cleanedItems,
       totalAmount,
       shippingAddress,
       paymentMethod: 'Cash on Delivery',
