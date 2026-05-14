@@ -9,7 +9,10 @@ export async function POST(req: Request) {
     if (!email || !password)
       return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
 
-    await dbConnect();
+    const conn = await dbConnect();
+    if (!conn) {
+      return NextResponse.json({ error: 'Database connection failed. Please check your configuration.' }, { status: 503 });
+    }
 
     const user = await User.findOne({ email });
     if (!user || !(await user.comparePassword(password)))

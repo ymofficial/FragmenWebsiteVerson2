@@ -11,7 +11,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'All fields are required' }, { status: 400 });
     }
 
-    await dbConnect();
+    const conn = await dbConnect();
+    if (!conn) {
+      return NextResponse.json({ error: 'Database connection failed. Please check your configuration.' }, { status: 503 });
+    }
 
     // Check if user exists
     const existingUser = await User.findOne({ email });
