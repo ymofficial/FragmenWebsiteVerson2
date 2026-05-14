@@ -37,41 +37,58 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ [
 
   return (
     <main className="flex-1">
-      {/* Hero Section - Optimized for Full Visibility on Mobile */}
-      <section className="relative w-full h-auto min-h-[400px] sm:h-[80vh] flex items-center justify-center bg-black text-white overflow-hidden">
+      {/* Hero Section - Optimized for Exact Image Height on Mobile */}
+      <section className="relative w-full h-auto bg-black text-white overflow-hidden">
         <div className="w-full h-full flex flex-col">
-           {/* Mobile Image Container */}
-           <div className="relative w-full aspect-[4/5] sm:hidden">
+           {/* Mobile Image Container - No bars */}
+           <div className="relative w-full sm:hidden">
               <img 
                 src={content.heroImage} 
                 alt="Fragmen Hero Mobile" 
-                className="object-contain w-full h-full bg-black"
+                className="w-full h-auto block bg-black"
               />
            </div>
            
            {/* Desktop/Tablet Background Image */}
-           <div className="hidden sm:block absolute inset-0 z-0">
+           <div className="hidden sm:block relative h-[80vh] min-h-[600px] z-0">
               <img 
                 src={content.heroImage} 
                 alt="Fragmen Hero Desktop" 
-                className="object-cover w-full h-full object-center opacity-70"
+                className="absolute inset-0 object-cover w-full h-full object-center opacity-70"
               />
               <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
+              
+              {/* Desktop Content Overlay */}
+              <div className="relative z-20 text-center px-6 max-w-4xl mx-auto h-full flex flex-col items-center justify-center">
+                {content.heroTitle && (
+                  <h1 className="text-4xl sm:text-5xl md:text-7xl font-light tracking-[0.2em] sm:tracking-[0.4em] mb-4 sm:mb-6 uppercase drop-shadow-lg">
+                    {content.heroTitle}
+                  </h1>
+                )}
+                {content.heroSubtitle && (
+                  <p className="text-[10px] sm:text-xs md:text-base font-light tracking-[0.2em] uppercase opacity-90 mb-8 sm:mb-10 max-w-xl leading-relaxed whitespace-pre-line drop-shadow-md">
+                    {content.heroSubtitle}
+                  </p>
+                )}
+                <a href="#collection" className="text-[10px] sm:text-xs uppercase tracking-[0.3em] border-b border-white pb-2 hover:opacity-70 transition-opacity">
+                  Explore Collection
+                </a>
+              </div>
            </div>
 
-           {/* Content Overlay */}
-           <div className="relative z-20 text-center px-6 py-12 sm:py-0 sm:absolute sm:inset-0 flex flex-col items-center justify-center bg-black sm:bg-transparent">
+           {/* Mobile Content (Below Image) */}
+           <div className="sm:hidden relative z-20 text-center px-6 py-10 flex flex-col items-center justify-center bg-black">
               {content.heroTitle && (
-                <h1 className="text-4xl sm:text-5xl md:text-7xl font-light tracking-[0.2em] sm:tracking-[0.4em] mb-4 sm:mb-6 uppercase drop-shadow-lg">
+                <h1 className="text-3xl font-light tracking-[0.2em] mb-4 uppercase">
                   {content.heroTitle}
                 </h1>
               )}
               {content.heroSubtitle && (
-                <p className="text-[10px] sm:text-xs md:text-base font-light tracking-[0.2em] uppercase opacity-60 sm:opacity-90 mb-8 sm:mb-10 max-w-xl leading-relaxed whitespace-pre-line drop-shadow-md">
+                <p className="text-[10px] font-light tracking-[0.2em] uppercase opacity-60 mb-8 max-w-xl leading-relaxed whitespace-pre-line">
                   {content.heroSubtitle}
                 </p>
               )}
-              <a href="#collection" className="text-[10px] sm:text-xs uppercase tracking-[0.3em] border-b border-white/20 sm:border-white pb-2 hover:opacity-70 transition-opacity">
+              <a href="#collection" className="text-[10px] uppercase tracking-[0.3em] border-b border-white/20 pb-2">
                 Explore Collection
               </a>
            </div>
