@@ -90,16 +90,16 @@ export default async function ProductGrid({ searchParams }: ProductGridProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-16">
+    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 sm:gap-x-6 gap-y-12 sm:gap-y-16 px-1 sm:px-0">
       {products.map((product: any) => (
         <Link key={product._id} href={`/products/${product._id}`} className="group cursor-pointer block">
-          <div className="relative w-full aspect-[3/4] bg-black/5 overflow-hidden mb-6">
+          <div className="relative w-full aspect-[3/4] bg-black/5 overflow-hidden mb-4 sm:mb-6">
             <Image
               src={product.imageUrls?.[0] || "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80"}
               alt={product.name}
               fill
               className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-[1.5s] ease-out"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
             />
             <div className="absolute inset-0 bg-black/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             {!product.inStock && (
