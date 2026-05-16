@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import dbConnect from "@/lib/db";
 import Product from "@/models/Product";
+import QuickAddToCart from "./QuickAddToCart";
 
 interface ProductGridProps {
   searchParams?: { [key: string]: string | string[] | undefined };
@@ -110,14 +111,13 @@ export default async function ProductGrid({ searchParams }: ProductGridProps) {
           </div>
           
           <div className="text-center flex flex-col items-center">
-            <p className="text-[8px] uppercase tracking-[0.3em] text-black/30 mb-2">{product.brand}</p>
             <h3 className="text-xs font-semibold tracking-[0.2em] mb-2 uppercase text-black">
               {product.name}
             </h3>
-            <p className="text-[10px] opacity-40 mb-4 uppercase tracking-[0.2em]">{product.category}</p>
             <p className="text-xs font-medium tracking-wider text-black">
               {Math.round(product.price)} Tk
             </p>
+            <QuickAddToCart product={product} />
           </div>
         </Link>
       ))}
