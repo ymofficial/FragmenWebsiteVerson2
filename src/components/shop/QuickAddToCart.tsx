@@ -18,7 +18,7 @@ export default function QuickAddToCart({ product }: QuickAddToCartProps) {
   return (
     <button
       onClick={handleAddToCart}
-      className="mt-4 w-full border border-black py-2 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-black hover:text-white transition-all duration-300"
+      className="mt-4 w-full bg-black text-white py-2 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-black/80 transition-all duration-300"
     >
       Add to Cart
     </button>
