@@ -48,19 +48,19 @@ export default function Header() {
         
         {/* Left: Mobile Menu Button */}
         <button 
-          className="lg:hidden p-2 -ml-2"
+          className="md:hidden p-2 -ml-2"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X size={24} strokeWidth={1.5} /> : <Menu size={24} strokeWidth={1.5} />}
         </button>
 
         {/* Left/Center: Brand Name */}
-        <Link href="/" className="text-lg sm:text-2xl font-light tracking-[0.4em] sm:tracking-[0.5em] uppercase lg:flex-1">
+        <Link href="/" className="text-lg sm:text-2xl font-light tracking-[0.4em] sm:tracking-[0.5em] uppercase md:flex-1">
           Fragmen
         </Link>
 
         {/* Middle: Desktop Navigation */}
-        <nav className="hidden lg:flex gap-10 xl:gap-24 text-[11px] xl:text-[13px] uppercase tracking-[0.3em] font-semibold flex-1 justify-center whitespace-nowrap px-4">
+        <nav className="hidden md:flex gap-10 xl:gap-24 text-[11px] xl:text-[13px] uppercase tracking-[0.3em] font-semibold flex-1 justify-center whitespace-nowrap px-4">
           {navLinks.map((link) => (
             <Link key={link.name} href={link.href} className="hover:text-black/50 transition-colors text-black">
               {link.name}
@@ -136,7 +136,7 @@ export default function Header() {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 top-20 bg-white z-[100] animate-in slide-in-from-left duration-300">
+        <div className="md:hidden fixed inset-0 top-20 bg-white z-[100] animate-in slide-in-from-left duration-300">
           <nav className="flex flex-col p-8 space-y-8">
             <div className="pb-4">
               <SearchBar />
